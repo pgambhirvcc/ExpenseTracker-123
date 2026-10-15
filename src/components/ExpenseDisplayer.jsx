@@ -1,27 +1,30 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import ThemeContext from '../context/ThemeContext'
+import ExpenseContext from '../context/ExpenseContext';
 
-const EXPENSES = [
-    {
-        name: 'Gasoline',
-        category: 'Car',
-        createdDate: new Date(),
-        amount: 100
-    },
-    {
-        name: 'Wallmart',
-        category: 'Grocery',
-        createdDate: new Date(),
-        amount: 250
-    }
-]
 const ExpenseDisplayer = () => {
+
+
+ const theme = useContext(ThemeContext);
+const { expensesList, setExpensesList } = useContext(ExpenseContext);
+
+const handleSort = () => {
+    const sortedExpensesList = expensesList.sort((a, b) => a.amount - b.amount);
+    setExpensesList([...sortedExpensesList]);
+}
 
   return (
     <div className='expense-displayer-container'>
+        <button onClick={handleSort}>Sort By Price</button>
+
         {
-            EXPENSES.map((expense) => {
+            expensesList.map((expense) => {
                 return (
-                    <div className='expense-displayer-list'>
+                    <div className={
+                        theme === 'light' ? 
+                        'expense-displayer-list-light':
+                        'expense-displayer-list-dark'
+                    }>
                         <span>Expense Name: {expense.name}</span>
                         <span>Expense Amount: ${expense.amount}</span>
                         <span>Expense Category: {expense.category}</span>

@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import ThemeContext from '../context/ThemeContext';
+import ExpenseContext from '../context/ExpenseContext';
 
 const CATEGORIES = [
     {
@@ -26,6 +28,8 @@ const CATEGORIES = [
 const ExpenseCreator = () => {
 
     const [expenseInfo, setExpenseInfo] = useState({});
+    const theme = useContext(ThemeContext);
+    const { expensesList, setExpensesList} = useContext(ExpenseContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -35,11 +39,15 @@ const ExpenseCreator = () => {
             ...expenseInfo,
             createdDate: new Date()
         }
-        console.log(dataWithDate);
+
+        setExpensesList([
+            ...expensesList,
+            dataWithDate
+        ])
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={theme === 'light'? 'form-light': 'form-dark'} onSubmit={handleSubmit}>
             <div class='form-control'>
                 <label>Expense Name</label>
                 <input
@@ -84,7 +92,7 @@ const ExpenseCreator = () => {
                 </select>
             </div>
 
-            <button>
+            <button className={theme === 'light' ? 'form-button-light': 'form-button-dark'}>
                 Submit
             </button>
         </form>
